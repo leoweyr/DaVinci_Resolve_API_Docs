@@ -1,6 +1,6 @@
 # DaVinci Resolve API Docs
 
-#### English| [简体中文](README_zh-cn.md)
+#### English| [简体中文](README-zh_cn.md)
 
 ![Label-Language_Support](https://img.shields.io/badge/Language%20Support-English%20Chinese-red)
 
