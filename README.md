@@ -2,7 +2,7 @@
 
 #### English| [简体中文](README_zh-cn.md)
 
-![Label-Language_Support](https://img.shields.io/badge/Language%20Support-English Chinese-red)
+![Label-Language_Support](https://img.shields.io/badge/Language%20Support-English%20Chinese-red)
 
 These docs are formatted copy of the official ***Blackmagic Design*** **DaVinci Resolve Studio** documentations and translated into multiple languages.
 
@@ -29,8 +29,8 @@ Welcome to contribute. Just `Fork` and then `Pull Request`!
 <table>
     <th rowspan="2">v18</th>
     <th rowspan="2">Nov. 22, 2022</th>
-    <td><a href="\scripting_API\v18\scripting_API-v18-en.md">English</a></td>
+    <td><a href="scripting_API\v18\scripting_API-v18.md">English</a></td>
     <tr>
-    	<td><a href="\scripting_API\v18\scripting_API-v18-zn_ch.md">Chinese</a></td>
+    	<td><a href="scripting_API\v18\scripting_API-v18-zn_ch.md">Chinese</a></td>
     </tr>
 </table>

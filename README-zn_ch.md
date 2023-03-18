@@ -2,7 +2,7 @@
 
 #### [English](README.md)| 简体中文
 
-![标签-支持语言](https://img.shields.io/badge/支持语言-中文 英文-red)
+![标签-支持语言](https://img.shields.io/badge/支持语言-中文%20英文-red)
 
 这些文档是官方***Blackmagic Design*** **达芬奇**文档的格式化副本，并翻译成多种语言。
 
@@ -29,8 +29,9 @@
 <table>
     <th rowspan="2">版本18</th>
     <th rowspan="2">2022年11月22日</th>
-    <td><a href="\scripting_API\v18\scripting_API-v18-en.md">英语</a></td>
+    <td><a href="scripting_API\v18\scripting_API-v18.md">英语</a></td>
     <tr>
-    	<td><a href="\scripting_API\v18\scripting_API-v18-zn_ch.md">简体中文</a></td>
+    	<td><a href="scripting_API\v18\scripting_API-v18-zn_ch.md">简体中文</a></td>
     </tr>
 </table>
+
