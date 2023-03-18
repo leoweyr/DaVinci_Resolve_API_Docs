@@ -31,6 +31,7 @@ Welcome to contribute. Just `Fork` and then `Pull Request`!
     <th rowspan="2">Nov. 22, 2022</th>
     <td><a href="scripting_API\v18\scripting_API-v18.md">English</a></td>
     <tr>
-    	<td><a href="scripting_API\v18\scripting_API-v18-zn_ch.md">Chinese</a></td>
+    	<td><a href="scripting_API\v18\scripting_API-v18-zh_cn.md">Chinese</a></td>
     </tr>
 </table>
+

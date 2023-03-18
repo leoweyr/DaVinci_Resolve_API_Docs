@@ -31,7 +31,6 @@
     <th rowspan="2">2022年11月22日</th>
     <td><a href="scripting_API\v18\scripting_API-v18.md">英语</a></td>
     <tr>
-    	<td><a href="scripting_API\v18\scripting_API-v18-zn_ch.md">简体中文</a></td>
+    	<td><a href="scripting_API\v18\scripting_API-v18-zh_cn.md">简体中文</a></td>
     </tr>
 </table>
-
