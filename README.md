@@ -1,4 +1,4 @@
-# Davinci Resolve API Docs
+# DaVinci Resolve API Docs
 
 #### English| [简体中文](README_zh-cn.md)
 
@@ -34,4 +34,3 @@ Welcome to contribute. Just `Fork` and then `Pull Request`!
     	<td><a href="scripting_API\v18\scripting_API-v18-zh_cn.md">Chinese</a></td>
     </tr>
 </table>
-
