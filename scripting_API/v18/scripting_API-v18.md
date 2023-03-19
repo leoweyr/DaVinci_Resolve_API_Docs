@@ -126,3 +126,71 @@ Some commonly used API functions are described below (*).
 | SaveLayoutPreset(presetName)                   | Bool             | Saves current UI layout as a preset named 'presetName'       |
 | ImportLayoutPreset(presetFilePath, presetName) | Bool             | Imports preset from path 'presetFilePath'. The optional argument 'presetName' specifies how the preset shall be named. If not specified, the preset is named based on the filename |
 | Quit()                                         | None             | Quits the Resolve App                                        |
+
+### ProjectManager
+
+| Method                                                       | Return             | Function                                                     |
+| :----------------------------------------------------------- | ------------------ | ------------------------------------------------------------ |
+| ArchiveProject(projectName,<br/>                 filePath,<br/>                 isArchiveSrcMedia=True,<br/>                 isArchiveRenderCache=True,<br/>isArchiveProxyMedia=False) | Bool               | Archives project to provided file path with the configuration as provided by the optional arguments |
+| CreateProject(projectName)                                   | Project            | Creates and returns a project if projectName (string) is unique, and None if it is not |
+| DeleteProject(projectName)                                   | Bool               | Delete project in the current folder if not currently loaded |
+| LoadProject(projectName)                                     | Project            | Loads and returns the project with name = projectName (string) if there is a match found, and None if there is no matching Project |
+| GetCurrentProject()                                          | Project            | Returns the currently loaded Resolve project                 |
+| SaveProject()                                                | Bool               | Saves the currently loaded project with its own name. Returns True if successful |
+| CloseProject(project)                                        | Bool               | Closes the specified project without saving                  |
+| CreateFolder(folderName)                                     | Bool               | Creates a folder if folderName (string) is unique            |
+| DeleteFolder(folderName)                                     | Bool               | Deletes the specified folder if it exists. Returns True in case of success |
+| GetProjectListInCurrentFolder()                              | [project names...] | Returns a list of project names in current folder            |
+| GetFolderListInCurrentFolder()                               | [folder names...]  | Returns a list of folder names in current folder             |
+| GotoRootFolder()                                             | Bool               | Opens root folder in database                                |
+| GotoParentFolder()                                           | Bool               | Opens parent folder of current folder in database if current folder has parent |
+| GetCurrentFolder()                                           | string             | Returns the current folder name                              |
+| OpenFolder(folderName)                                       | Bool               | Opens folder under given name                                |
+| ImportProject(filePath, projectName=None)                    | Bool               | Imports a project from the file path provided with given project name, if any. Returns True if successful |
+| ExportProject(projectName, filePath, withStillsAndLUTs=True) | Bool               | Exports project to provided file path, including stills and LUTs if withStillsAndLUTs is True (enabled by default). Returns True in case of success |
+| RestoreProject(filePath, projectName=None)                   | Bool               | Restores a project from the file path provided with given project name, if any. Returns True if successful |
+| GetCurrentDatabase()                                         | {dbInfo}           | Returns a dictionary (with keys 'DbType', 'DbName' and optional 'IpAddress') corresponding to the current database connection |
+| GetDatabaseList()                                            | [{dbInfo}]         | Returns a list of dictionary items (with keys 'DbType', 'DbName' and optional 'IpAddress') corresponding to all the databases added to Resolve |
+| SetCurrentDatabase({dbInfo})                                 | Bool               | Switches current database connection to the database specified by the keys below, and closes any open project.<br/>'DbType': 'Disk' or 'PostgreSQL' (string)<br/>'DbName': database name (string)<br/> 'IpAddress': IP address of the PostgreSQL server (string, optional key - defaults to '127.0.0.1') |
+
+### Project
+
+| Method                                                       | Return              | Function                                                     |
+| ------------------------------------------------------------ | ------------------- | ------------------------------------------------------------ |
+| GetMediaPool()                                               | MediaPool           | Returns the Media Pool object                                |
+| GetTimelineCount()                                           | Int                 | Returns the number of timelines currently present in the project |
+| GetTimelineByIndex(idx)                                      | Timeline            | Returns timeline at the given index, 1 <= idx <= project.GetTimelineCount() |
+| GetCurrentTimeline()                                         | Timeline            | Returns the currently loaded timeline                        |
+| SetCurrentTimeline(timeline)                                 | Bool                | Sets given timeline as current timeline for the project. Returns True if successful |
+| GetGallery()                                                 | Gallery             | Returns the Gallery object                                   |
+| GetName()                                                    | String              | Returns project name                                         |
+| SetName(projectName)                                         | Bool                | Sets project name if given projectName (string) is unique    |
+| GetPresetList()                                              | [presets...]        | Returns a list of presets and their information              |
+| SetPreset(presetName)                                        | Bool                | Sets preset by given presetName (string) into project        |
+| AddRenderJob()                                               | String              | Adds a render job based on current render settings to the render queue. Returns a unique job id (string) for the new render job |
+| DeleteRenderJob(jobId)                                       | Bool                | Deletes render job for input job id (string)                 |
+| DeleteAllRenderJobs()                                        | Bool                | Deletes all render jobs in the queue                         |
+| GetRenderJobList()                                           | [render jobs...]    | Returns a list of render jobs and their information          |
+| GetRenderPresetList()                                        | [presets...]        | Returns a list of render presets and their information       |
+| StartRendering(jobId1, jobId2, ...)                          | Bool                | Starts rendering jobs indicated by the input job ids         |
+| StartRendering([jobIds...], isInteractiveMode=False)         | Bool                | Starts rendering jobs indicated by the input job ids<br /> The optional "isInteractiveMode", when set, enables error feedback in the UI during rendering |
+| StartRendering(isInteractiveMode=False)                      | Bool                | Starts rendering all queued render jobs. <br/>The optional "isInteractiveMode", when set, enables error feedback in the UI during rendering |
+| StopRendering()                                              | None                | Stops any current render processes                           |
+| IsRenderingInProgress()                                      | Bool                | Returns True if rendering is in progress                     |
+| LoadRenderPreset(presetName)                                 | Bool                | Sets a preset as current preset for rendering if presetName (string) exists |
+| SaveAsNewRenderPreset(presetName)                            | Bool                | Creates new render preset by given name if presetName(string) is unique |
+| SetRenderSettings({settings})                                | Bool                | Sets given settings for rendering. Settings is a dict, with support for the keys: Refer to "Looking up render settings" section for information for supported settings |
+| GetRenderJobStatus(jobId)                                    | {status info}       | Returns a dict with job status and completion percentage of the job by given jobId (string) |
+| GetSetting(settingName)                                      | String              | Returns value of project setting (indicated by settingName, string). Check the section below for more information |
+| SetSetting(settingName, settingValue)                        | Bool                | Sets the project setting (indicated by settingName, string) to the value (settingValue, string). Check the section below for more information |
+| GetRenderFormats()                                           | {render formats...} | Returns a dict (format -> file extension) of available render formats |
+| GetRenderCodecs(renderFormat)                                | {render codecs...}  | Returns a dict (codec description -> codec name) of available codecs for given render format (string) |
+| GetCurrentRenderFormatAndCodec()                             | {format, codec}     | Returns a dict with currently selected format 'format' and render codec 'codec' |
+| SetCurrentRenderFormatAndCodec(format, codec)                | Bool                | Sets given render format (string) and render codec (string) as options for rendering |
+| GetCurrentRenderMode()                                       | Int                 | Returns the render mode: 0 - Individual clips, 1 - Single clip |
+| SetCurrentRenderMode(renderMode)                             | Bool                | Sets the render mode. Specify renderMode = 0 for Individual clips, 1 for Single clip |
+| GetRenderResolutions(format, codec)                          | [{Resolution}]      | Returns list of resolutions applicable for the given render format (string) and render codec (string). Returns full list of resolutions if no argument is provided. Each element in the list is a dictionary with 2 keys "Width" and "Height" |
+| RefreshLUTList()                                             | Bool                | Refreshes LUT List                                           |
+| GetUniqueId()                                                | String              | Returns a unique ID for the project item                     |
+| InsertAudioToCurrentTrackAtPlayhead(mediaPath, startOffsetInSamples, durationInSamples) | Bool                | Inserts the media specified by mediaPath (string) with startOffsetInSamples (int) and durationInSamples (int) at the playhead on a selected track on the Fairlight page. Returns True if successful, otherwise False |
+
