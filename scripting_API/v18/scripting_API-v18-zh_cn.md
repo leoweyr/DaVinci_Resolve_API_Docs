@@ -198,48 +198,48 @@ projectManager.CreateProject("Hello World")
 
 ### Timeline
 
-| Method                                                      | Return          | Function                                                     |
-| ----------------------------------------------------------- | --------------- | ------------------------------------------------------------ |
-| GetName()                                                   | String          | 返回时间线名称                                               |
-| SetName(timelineName)                                       | Bool            | 如果 timelineName (string) 是唯一的，则设置时间线名称。 成功则返回真 |
-| GetStartFrame()                                             | Int             | 返回时间线开始的帧号                                         |
-| GetEndFrame()                                               | Int             | 返回时间线末尾的帧号                                         |
-| SetStartTimecode(timecode)                                  | Bool            | 将时间线的开始时间码设置为字符串“timecode”。 更改成功时返回 true，否则返回 false |
-| GetStartTimecode()                                          | String          | 返回时间线的开始时间码                                       |
-| GetTrackCount(trackType)                                    | Int             | 返回给定轨道类型的轨道数 ("audio", "video" or "subtitle")    |
-| GetItemListInTrack(trackType, index)                        | [items...]      | 返回该轨道上的时间线项目列表（基于轨道类型和索引）。1 <= index <= GetTrackCount(trackType) |
-| AddMarker(frameId, color, name, note, duration, customData) | Bool            | 在给定的 frameId 位置和给定的标记信息创建一个新标记。'customData' 是可选的，有助于将用户特定数据附加到标记 |
-| GetMarkers()                                                | {markers...}    | 返回所有标记和字典及其信息的字典（frameId -> {information}）<br />示例：值 {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...} 表示时间轴偏移 96 处的单个绿色标记 |
-| GetMarkerByCustomData(customData)                           | {marker...}     | 返回具有指定 customData 的第一个匹配标记的标记 {information} |
-| UpdateMarkerCustomData(frameId, customData)                 | Bool            | 为给定 frameId 位置的标记更新 customData (string)。CustomData 不通过 UI 公开，对于脚本开发人员将任何用户特定数据附加到标记非常有用 |
-| GetMarkerCustomData(frameId)                                | String          | 返回给定 frameId 位置标记的 customData 字符串                |
-| DeleteMarkersByColor(color)                                 | Bool            | 删除指定颜色的所有时间轴标记。支持“All"参数并删除所有时间轴标记 |
-| DeleteMarkerAtFrame(frameNum)                               | Bool            | 删除给定帧号处的时间线标记                                   |
-| DeleteMarkerByCustomData(customData)                        | Bool            | 删除具有指定 customData 的第一个匹配标记                     |
-| ApplyGradeFromDRX(path, gradeMode, item1, item2, ...)       | Bool            | 从给定的 path (string) 加载静止图像并使用 gradeMode (int) 将等级应用于时间轴项目：0 - “无关键帧”，1 - “源时间码对齐”，2 - “起始帧对齐” |
-| ApplyGradeFromDRX(path, gradeMode, [items])                 | Bool            | 从给定的 path (string) 加载静止图像并使用 gradeMode (int) 将等级应用于时间轴项目：0 - “无关键帧”，1 - “源时间码对齐”，2 - “起始帧对齐” |
-| GetCurrentTimecode()                                        | String          | 返回当前播放头位置的字符串时间码表示，同时在剪切、编辑、颜色、Fairlight 和交付页面上 |
-| SetCurrentTimecode(timecode)                                | Bool            | 根据剪切、编辑、颜色、Fairlight 和交付页面的输入时间码设置当前播放头位置 |
-| GetCurrentVideoItem()                                       | Item            | 返回当前视频时间线 item                                      |
-| GetCurrentClipThumbnailImage()                              | {thumbnailData} | 返回一个字典（键为“width”、“height”、“format”和“data”），其中数据包含彩色页面中当前媒体的原始缩略图图像数据（以 base64 格式编码的 RGB 8 位图像数据）<br / >示例文件夹中的 6_get_current_media_thumbnail.py 中提供了如何检索和解释缩略图的示例 |
-| GetTrackName(trackType, trackIndex)                         | String          | 返回由 trackType（“audio”、“video”或“subtitle”）和索引指示的轨道的轨道名称。1 <= trackIndex <= GetTrackCount(trackType) |
-| SetTrackName(trackType, trackIndex, name)                   | Bool            | 为由 trackType（“audio”、“video”或“subtitle”）和索引指示的轨道设置轨道名称（字符串）。1 <= trackIndex <= GetTrackCount(trackType) |
-| DuplicateTimeline(timelineName)                             | timeline        | 复制时间线并返回创建的时间线，成功时带有（可选）timelineName |
-| CreateCompoundClip([timelineItems], {clipInfo})             | timelineItem    | 使用可选的 clipInfo 映射创建输入时间线项目的复合剪辑：{"startTimecode" : "00:00:00:00", "name" : "Compound Clip 1"}。它返回创建的 timelineItem 对象 |
-| CreateFusionClip([timelineItems])                           | timelineItem    | 创建输入时间线项目的 Fusion 剪辑。它返回创建的时间线项目     |
-| ImportIntoTimeline(filePath, {importOptions})               | Bool            | 从 AAF 文件和可选的 importOptions dict 导入时间线项目，支持键：<br/>“autoImportSourceClipsIntoMediaPool”：Bool，指定源剪辑是否应导入媒体池，默认为 True<br/>“ ignoreFileExtensionsWhenMatching": Bool, 指定匹配时是否忽略文件扩展名，默认为False<br/>"linkToSourceCameraFiles": Bool, 指定是否应启用到源相机文件的链接，默认为False<br/>"useSizingInfo": Bool，指定是否应使用大小信息，默认为 False<br/>“importMultiChannelAudioTracksAsLinkedGroups”：Bool，指定是否应将多声道音轨导入为链接组，默认为 False<br/>“insertAdditionalTracks”：Bool， 指定是否应插入其他曲目，默认为 True<br/>“insertWithOffset”：字符串，指定以时间码格式插入偏移值 - 默认为“00:00:00:00”，如果“insertAdditionalTracks”为 False< br/>“搜 rceClipsPath"：字符串，如果媒体在其原始路径中不可访问且"ignoreFileExtensionsWhenMatching"为真，则指定用于搜索源剪辑的文件系统路径<br/>"sourceClipsFolders"：字符串，用于搜索源的媒体池文件夹对象列表 如果媒体不存在于当前文件夹中则剪辑 |
-| Export(fileName, exportType, exportSubtype)                 | Bool            | 根据输入的 exportType 和 exportSubtype 格式将时间线导出到“文件名”<br />有关参数的信息，请参阅“查找时间线导出属性”部分 |
-| GetSetting(settingName)                                     | String          | 返回时间线设置的值（由 settingName (string) 表示）。查看以下部分以获取更多信息 |
-| SetSetting(settingName, settingValue)                       | Bool            | 将时间线设置（由 settingName (string) 表示）设置为值 (settingValue : string)。查看以下部分以获取更多信息 |
-| InsertGeneratorIntoTimeline(generatorName)                  | TimelineItem    | 将生成器（由 generatorName (string) 表示）插入到时间线中     |
-| InsertFusionGeneratorIntoTimeline(generatorName)            | TimelineItem    | 将 Fusion 生成器（由 generatorName (string) 表示）插入时间线 |
-| InsertFusionCompositionIntoTimeline()                       | TimelineItem    | 将 Fusion 合成插入时间线                                     |
-| InsertOFXGeneratorIntoTimeline(generatorName)               | TimelineItem    | 将 OFX 生成器（由 generatorName (string) 表示）插入时间线    |
-| InsertTitleIntoTimeline(titleName)                          | TimelineItem    | 将标题（由 titleName (string) 表示）插入时间线               |
-| InsertFusionTitleIntoTimeline(titleName)                    | TimelineItem    | 将 Fusion 标题（由 titleName (string) 表示）插入时间线       |
-| GrabStill()                                                 | galleryStill    | 从当前视频剪辑中抓取静止图像。返回一个 GalleryStill 对象     |
-| GrabAllStills(stillFrameSource)                             | [galleryStill]  | 从“stillFrameSource”（1 - 第一帧，2 - 中间帧）的时间线的所有剪辑中抓取静止图像。返回 GalleryStill 对象列表 |
-| GetUniqueId()                                               | String          | 返回 Timeline 的唯一 ID                                      |
+| Method                                                      | Return            | Function                                                     |
+| ----------------------------------------------------------- | ----------------- | ------------------------------------------------------------ |
+| GetName()                                                   | String            | 返回时间线名称                                               |
+| SetName(timelineName)                                       | Bool              | 如果 timelineName (string) 是唯一的，则设置时间线名称。 成功则返回真 |
+| GetStartFrame()                                             | Int               | 返回时间线开始的帧号                                         |
+| GetEndFrame()                                               | Int               | 返回时间线末尾的帧号                                         |
+| SetStartTimecode(timecode)                                  | Bool              | 将时间线的开始时间码设置为字符串“timecode”。 更改成功时返回 true，否则返回 false |
+| GetStartTimecode()                                          | String            | 返回时间线的开始时间码                                       |
+| GetTrackCount(trackType)                                    | Int               | 返回给定轨道类型的轨道数 ("audio", "video" or "subtitle")    |
+| GetItemListInTrack(trackType, index)                        | [TimelineItem...] | 返回该轨道上的 TimelineItem 对象列表（基于轨道类型和索引）。1 <= index <= GetTrackCount(trackType) |
+| AddMarker(frameId, color, name, note, duration, customData) | Bool              | 在给定的 frameId 位置和给定的标记信息创建一个新标记。'customData' 是可选的，有助于将用户特定数据附加到标记 |
+| GetMarkers()                                                | {markers...}      | 返回所有标记和字典及其信息的字典（frameId -> {information}）<br />示例：值 {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...} 表示时间轴偏移 96 处的单个绿色标记 |
+| GetMarkerByCustomData(customData)                           | {marker...}       | 返回具有指定 customData 的第一个匹配标记的标记 {information} |
+| UpdateMarkerCustomData(frameId, customData)                 | Bool              | 为给定 frameId 位置的标记更新 customData (string)。CustomData 不通过 UI 公开，对于脚本开发人员将任何用户特定数据附加到标记非常有用 |
+| GetMarkerCustomData(frameId)                                | String            | 返回给定 frameId 位置标记的 customData 字符串                |
+| DeleteMarkersByColor(color)                                 | Bool              | 删除指定颜色的所有时间轴标记。支持“All"参数并删除所有时间轴标记 |
+| DeleteMarkerAtFrame(frameNum)                               | Bool              | 删除给定帧号处的时间线标记                                   |
+| DeleteMarkerByCustomData(customData)                        | Bool              | 删除具有指定 customData 的第一个匹配标记                     |
+| ApplyGradeFromDRX(path, gradeMode, item1, item2, ...)       | Bool              | 从给定的 path (string) 加载静止图像并使用 gradeMode (int) 将等级应用于时间轴项目：0 - “无关键帧”，1 - “源时间码对齐”，2 - “起始帧对齐” |
+| ApplyGradeFromDRX(path, gradeMode, [items])                 | Bool              | 从给定的 path (string) 加载静止图像并使用 gradeMode (int) 将等级应用于时间轴项目：0 - “无关键帧”，1 - “源时间码对齐”，2 - “起始帧对齐” |
+| GetCurrentTimecode()                                        | String            | 返回当前播放头位置的字符串时间码表示，同时在剪切、编辑、颜色、Fairlight 和交付页面上 |
+| SetCurrentTimecode(timecode)                                | Bool              | 根据剪切、编辑、颜色、Fairlight 和交付页面的输入时间码设置当前播放头位置 |
+| GetCurrentVideoItem()                                       | TimelineItem      | 返回当前视频时间线 TimelineItem                              |
+| GetCurrentClipThumbnailImage()                              | {thumbnailData}   | 返回一个字典（键为“width”、“height”、“format”和“data”），其中数据包含彩色页面中当前媒体的原始缩略图图像数据（以 base64 格式编码的 RGB 8 位图像数据）<br / >示例文件夹中的 6_get_current_media_thumbnail.py 中提供了如何检索和解释缩略图的示例 |
+| GetTrackName(trackType, trackIndex)                         | String            | 返回由 trackType（“audio”、“video”或“subtitle”）和索引指示的轨道的轨道名称。1 <= trackIndex <= GetTrackCount(trackType) |
+| SetTrackName(trackType, trackIndex, name)                   | Bool              | 为由 trackType（“audio”、“video”或“subtitle”）和索引指示的轨道设置轨道名称（字符串）。1 <= trackIndex <= GetTrackCount(trackType) |
+| DuplicateTimeline(timelineName)                             | timeline          | 复制时间线并返回创建的时间线，成功时带有（可选）timelineName |
+| CreateCompoundClip([timelineItems], {clipInfo})             | timelineItem      | 使用可选的 clipInfo 映射创建输入时间线项目的复合剪辑：{"startTimecode" : "00:00:00:00", "name" : "Compound Clip 1"}。它返回创建的 timelineItem 对象 |
+| CreateFusionClip([timelineItems])                           | timelineItem      | 创建输入时间线项目的 Fusion 剪辑。它返回创建的时间线项目     |
+| ImportIntoTimeline(filePath, {importOptions})               | Bool              | 从 AAF 文件和可选的 importOptions dict 导入时间线项目，支持键：<br/>“autoImportSourceClipsIntoMediaPool”：Bool，指定源剪辑是否应导入媒体池，默认为 True<br/>“ ignoreFileExtensionsWhenMatching": Bool, 指定匹配时是否忽略文件扩展名，默认为False<br/>"linkToSourceCameraFiles": Bool, 指定是否应启用到源相机文件的链接，默认为False<br/>"useSizingInfo": Bool，指定是否应使用大小信息，默认为 False<br/>“importMultiChannelAudioTracksAsLinkedGroups”：Bool，指定是否应将多声道音轨导入为链接组，默认为 False<br/>“insertAdditionalTracks”：Bool， 指定是否应插入其他曲目，默认为 True<br/>“insertWithOffset”：字符串，指定以时间码格式插入偏移值 - 默认为“00:00:00:00”，如果“insertAdditionalTracks”为 False< br/>“搜 rceClipsPath"：字符串，如果媒体在其原始路径中不可访问且"ignoreFileExtensionsWhenMatching"为真，则指定用于搜索源剪辑的文件系统路径<br/>"sourceClipsFolders"：字符串，用于搜索源的媒体池文件夹对象列表 如果媒体不存在于当前文件夹中则剪辑 |
+| Export(fileName, exportType, exportSubtype)                 | Bool              | 根据输入的 exportType 和 exportSubtype 格式将时间线导出到“文件名”<br />有关参数的信息，请参阅“查找时间线导出属性”部分 |
+| GetSetting(settingName)                                     | String            | 返回时间线设置的值（由 settingName (string) 表示）。查看以下部分以获取更多信息 |
+| SetSetting(settingName, settingValue)                       | Bool              | 将时间线设置（由 settingName (string) 表示）设置为值 (settingValue : string)。查看以下部分以获取更多信息 |
+| InsertGeneratorIntoTimeline(generatorName)                  | TimelineItem      | 将生成器（由 generatorName (string) 表示）插入到时间线中     |
+| InsertFusionGeneratorIntoTimeline(generatorName)            | TimelineItem      | 将 Fusion 生成器（由 generatorName (string) 表示）插入时间线 |
+| InsertFusionCompositionIntoTimeline()                       | TimelineItem      | 将 Fusion 合成插入时间线                                     |
+| InsertOFXGeneratorIntoTimeline(generatorName)               | TimelineItem      | 将 OFX 生成器（由 generatorName (string) 表示）插入时间线    |
+| InsertTitleIntoTimeline(titleName)                          | TimelineItem      | 将标题（由 titleName (string) 表示）插入时间线               |
+| InsertFusionTitleIntoTimeline(titleName)                    | TimelineItem      | 将 Fusion 标题（由 titleName (string) 表示）插入时间线       |
+| GrabStill()                                                 | galleryStill      | 从当前视频剪辑中抓取静止图像。返回一个 GalleryStill 对象     |
+| GrabAllStills(stillFrameSource)                             | [galleryStill]    | 从“stillFrameSource”（1 - 第一帧，2 - 中间帧）的时间线的所有剪辑中抓取静止图像。返回 GalleryStill 对象列表 |
+| GetUniqueId()                                               | String            | 返回 Timeline 的唯一 ID                                      |
 
 ### TimelineItem
 
