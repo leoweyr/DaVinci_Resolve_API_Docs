@@ -238,3 +238,64 @@ Some commonly used API functions are described below (*).
 | GrabStill()                                                 | galleryStill    | Grabs still from the current video clip. Returns a GalleryStill object |
 | GrabAllStills(stillFrameSource)                             | [galleryStill]  | Grabs stills from all the clips of the timeline at 'stillFrameSource' (1 - First frame, 2 - Middle frame). Returns the list of GalleryStill objects |
 | GetUniqueId()                                               | String          | Returns a unique ID for the timeline                         |
+
+### TimelineItem
+
+| Method                                                      | Return            | Function                                                     |
+| ----------------------------------------------------------- | ----------------- | ------------------------------------------------------------ |
+| GetName()                                                   | string            | Returns the item name                                        |
+| GetDuration()                                               | Int               | Returns the item duration                                    |
+| GetEnd()                                                    | Int               | Returns the end frame position on the timeline               |
+| GetFusionCompCount()                                        | Int               | Returns number of Fusion compositions associated with the timeline item |
+| GetFusionCompByIndex(compIndex)                             | fusionComp        | Returns the Fusion composition object based on given index. 1 <= compIndex <= timelineItem.GetFusionCompCount() |
+| GetFusionCompNameList()                                     | [names...]        | Returns a list of Fusion composition names associated with the timeline item |
+| GetFusionCompByName(compName)                               | fusionComp        | Returns the Fusion composition object based on given name    |
+| GetLeftOffset()                                             | Int               | Returns the maximum extension by frame for clip from left side |
+| GetRightOffset()                                            | Int               | Returns the maximum extension by frame for clip from right side |
+| GetStart()                                                  | Int               | Returns the start frame position on the timeline             |
+| SetProperty(propertyKey, propertyValue)                     | Bool              | Sets the value of property "propertyKey" to value "propertyValue"<br />Refer to "Looking up Timeline item properties" for more information |
+| GetProperty(propertyKey)                                    | Int / [key:value] | returns the value of the specified key<br />if no key is specified, the method returns a dictionary(python) or table(lua) for all supported keys |
+| AddMarker(frameId, color, name, note, duration, customData) | Bool              | Creates a new marker at given frameId position and with given marker information. 'customData' is optional and helps to attach user specific data to the marker |
+| GetMarkers()                                                | {markers...}      | Returns a dict (frameId -> {information}) of all markers and dicts with their information<br />Example: a value of {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...} indicates a single green marker at clip offset 96 |
+| GetMarkerByCustomData(customData)                           | {markers...}      | Returns marker {information} for the first matching marker with specified customData |
+| UpdateMarkerCustomData(frameId, customData)                 | Bool              | Updates customData (string) for the marker at given frameId position. CustomData is not exposed via UI and is useful for scripting developer to attach any user specific data to markers |
+| GetMarkerCustomData(frameId)                                | String            | Returns customData string for the marker at given frameId position |
+| DeleteMarkersByColor(color)                                 | Bool              | Delete all markers of the specified color from the timeline item. "All" as argument deletes all color markers |
+| DeleteMarkerAtFrame(frameNum)                               | Bool              | Delete marker at frame number from the timeline item         |
+| DeleteMarkerByCustomData(customData)                        | Bool              | Delete first matching marker with specified customData       |
+| AddFlag(color)                                              | Bool              | Adds a flag with given color (string)                        |
+| GetFlagList()                                               | [colors...]       | Returns a list of flag colors assigned to the item           |
+| ClearFlags(color)                                           | Bool              | Clear flags of the specified color. An "All" argument is supported to clear all flags |
+| GetClipColor()                                              | String            | Returns the item color as a string                           |
+| SetClipColor(colorName)                                     | Bool              | Sets the item color based on the colorName (string)          |
+| ClearClipColor()                                            | Bool              | Clears the item color                                        |
+| AddFusionComp()                                             | fusionComp        | Adds a new Fusion composition associated with the timeline item |
+| ImportFusionComp(path)                                      | fusionComp        | Imports a Fusion composition from given file path by creating and adding a new composition for the item |
+| ExportFusionComp(path, compIndex)                           | Bool              | Exports the Fusion composition based on given index to the path provided |
+| DeleteFusionCompByName(compName)                            | Bool              | Deletes the named Fusion composition                         |
+| LoadFusionCompByName(compName)                              | fusionComp        | Loads the named Fusion composition as the active composition |
+| RenameFusionCompByName(oldName, newName)                    | Bool              | Renames the Fusion composition identified by oldName         |
+| AddVersion(versionName, versionType)                        | Bool              | Adds a new color version for a video clip based on versionType (0 - local, 1 - remote) |
+| GetCurrentVersion()                                         | {versionName...}  | Returns the current version of the video clip. The returned value will have the keys versionName and versionType(0 - local, 1 - remote) |
+| DeleteVersionByName(versionName, versionType)               | Bool              | Deletes a color version by name and versionType (0 - local, 1 - remote) |
+| LoadVersionByName(versionName, versionType)                 | Bool              | Loads a named color version as the active version. versionType: 0 - local, 1 - remote |
+| RenameVersionByName(oldName, newName, versionType)          | Bool              | Renames the color version identified by oldName and versionType (0 - local, 1 - remote) |
+| GetVersionNameList(versionType)                             | [names...]        | Returns a list of all color versions for the given versionType (0 - local, 1 - remote) |
+| GetMediaPoolItem()                                          | MediaPoolItem     | Returns the media pool item corresponding to the timeline item if one exists |
+| GetStereoConvergenceValues()                                | {keyframes...}    | Returns a dict (offset -> value) of keyframe offsets and respective convergence values |
+| GetStereoLeftFloatingWindowParams()                         | {keyframes...}    | For the LEFT eye -> returns a dict (offset -> dict) of keyframe offsets and respective floating window params. Value at particular offset includes the left, right, top and bottom floating window values |
+| GetStereoRightFloatingWindowParams()                        | {keyframes...}    | For the RIGHT eye -> returns a dict (offset -> dict) of keyframe offsets and respective floating window params. Value at particular offset includes the left, right, top and bottom floating window values |
+| GetNumNodes()                                               | Int               | Returns the number of nodes in the current graph for the timeline item |
+| SetLUT(nodeIndex, lutPath)                                  | Bool              | Sets LUT on the node mapping the node index provided, 1 <= nodeIndex <= total number of nodes<br/>The lutPath can be an absolute path, or a relative path (based off custom LUT paths or the master LUT path)<br/>The operation is successful for valid lut paths that Resolve has already discovered (see Project.RefreshLUTList) |
+| GetLUT(nodeIndex)                                           | String            | Gets relative LUT path based on the node index provided, 1 <= nodeIndex <= total number of nodes |
+| SetCDL([CDL map])                                           | Bool              | Keys of map are: "NodeIndex", "Slope", "Offset", "Power", "Saturation", where 1 <= NodeIndex <= total number of nodes.<br/>Example python code - SetCDL({"NodeIndex" : "1", "Slope" : "0.5 0.4 0.2", "Offset" : "0.4 0.3 0.2", "Power" : "0.6 0.7 0.8", "Saturation" : "0.65"}) |
+| AddTake(mediaPoolItem, startFrame, endFrame)                | Bool              | Adds mediaPoolItem as a new take. Initializes a take selector for the timeline item if needed. By default, the full clip extents is added. startFrame (int) and endFrame (int) are optional arguments used to specify the extents |
+| GetSelectedTakeIndex()                                      | Int               | Returns the index of the currently selected take, or 0 if the clip is not a take selector |
+| GetTakesCount()                                             | Int               | Returns the number of takes in take selector, or 0 if the clip is not a take selector |
+| GetTakeByIndex(idx)                                         | {takeInfo...}     | Returns a dict (keys "startFrame", "endFrame" and "mediaPoolItem") with take info for specified index |
+| DeleteTakeByIndex(idx)                                      | Bool              | Deletes a take by index, 1 <= idx <= number of takes         |
+| SelectTakeByIndex(idx)                                      | Bool              | Selects a take by index, 1 <= idx <= number of takes         |
+| FinalizeTake()                                              | Bool              | Finalizes take selection                                     |
+| CopyGrades([tgtTimelineItems])                              | Bool              | Copies the current grade to all the items in tgtTimelineItems list. Returns True on success and False if any error occurred |
+| UpdateSidecar()                                             | Bool              | Updates sidecar file for BRAW clips or RMD file for R3D clips |
+| GetUniqueId()                                               | String            | Returns a unique ID for the timeline item                    |

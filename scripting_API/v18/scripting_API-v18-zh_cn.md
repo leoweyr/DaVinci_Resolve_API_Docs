@@ -213,7 +213,7 @@ projectManager.CreateProject("Hello World")
 | GetMarkerByCustomData(customData)                           | {marker...}     | 返回具有指定 customData 的第一个匹配标记的标记 {information} |
 | UpdateMarkerCustomData(frameId, customData)                 | Bool            | 为给定 frameId 位置的标记更新 customData (string)。CustomData 不通过 UI 公开，对于脚本开发人员将任何用户特定数据附加到标记非常有用 |
 | GetMarkerCustomData(frameId)                                | String          | 返回给定 frameId 位置标记的 customData 字符串                |
-| DeleteMarkersByColor(color)                                 | Bool            | 删除指定颜色的所有时间轴标记。支持“全部”参数并删除所有时间轴标记 |
+| DeleteMarkersByColor(color)                                 | Bool            | 删除指定颜色的所有时间轴标记。支持“All"参数并删除所有时间轴标记 |
 | DeleteMarkerAtFrame(frameNum)                               | Bool            | 删除给定帧号处的时间线标记                                   |
 | DeleteMarkerByCustomData(customData)                        | Bool            | 删除具有指定 customData 的第一个匹配标记                     |
 | ApplyGradeFromDRX(path, gradeMode, item1, item2, ...)       | Bool            | 从给定的 path (string) 加载静止图像并使用 gradeMode (int) 将等级应用于时间轴项目：0 - “无关键帧”，1 - “源时间码对齐”，2 - “起始帧对齐” |
@@ -239,5 +239,65 @@ projectManager.CreateProject("Hello World")
 | InsertFusionTitleIntoTimeline(titleName)                    | TimelineItem    | 将 Fusion 标题（由 titleName (string) 表示）插入时间线       |
 | GrabStill()                                                 | galleryStill    | 从当前视频剪辑中抓取静止图像。返回一个 GalleryStill 对象     |
 | GrabAllStills(stillFrameSource)                             | [galleryStill]  | 从“stillFrameSource”（1 - 第一帧，2 - 中间帧）的时间线的所有剪辑中抓取静止图像。返回 GalleryStill 对象列表 |
-| GetUniqueId()                                               | String          | 返回时间轴的唯一 ID                                          |
+| GetUniqueId()                                               | String          | 返回 Timeline 的唯一 ID                                      |
 
+### TimelineItem
+
+| 方法                                                        | 返回值            | 作用                                                         |
+| ----------------------------------------------------------- | ----------------- | ------------------------------------------------------------ |
+| GetName()                                                   | string            | 返回 TimelineItem 名称                                       |
+| GetDuration()                                               | Int               | 返回 TimelineItem 持续时间                                   |
+| GetEnd()                                                    | Int               | 返回时间线上的结束帧位置                                     |
+| GetFusionCompCount()                                        | Int               | 返回与时间线 TimelineItem 关联的 Fusion 作品数               |
+| GetFusionCompByIndex(compIndex)                             | fusionComp        | 返回基于给定索引的 fusionComp 对象。1 <= compIndex <= timelineItem.GetFusionCompCount() |
+| GetFusionCompNameList()                                     | [names...]        | 返回与时间线项目关联的 Fusion 合成名称列表                   |
+| GetFusionCompByName(compName)                               | fusionComp        | 返回基于给定名称的 FusionComp对象                            |
+| GetLeftOffset()                                             | Int               | 返回剪辑从左侧按帧的最大扩展                                 |
+| GetRightOffset()                                            | Int               | 从右侧返回剪辑的最大帧扩展                                   |
+| GetStart()                                                  | Int               | 返回时间线上的起始帧位置                                     |
+| SetProperty(propertyKey, propertyValue)                     | Bool              | 将属性“propertyKey”的值设置为值“propertyValue”<br />有关详细信息，请参阅“查找时间线项目属性” |
+| GetProperty(propertyKey)                                    | Int / [key:value] | 返回指定键的值<br />如果没有指定键，该方法返回所有支持键的字典（python）或表（lua） |
+| AddMarker(frameId, color, name, note, duration, customData) | Bool              | 在给定的 frameId 位置和给定的标记信息创建一个新标记。'customData' 是可选的，有助于将用户特定数据附加到标记 |
+| GetMarkers()                                                | {markers...}      | 返回所有标记和字典及其信息的字典（frameId -> {information}）<br />示例：值 {96.0: {'color': 'Green', 'duration': 1.0, 'note': '', 'name': 'Marker 1', 'customData': ''}, ...} 表示剪辑偏移 96 处的单个绿色标记 |
+| GetMarkerByCustomData(customData)                           | {markers...}      | 返回具有指定 customData 的第一个匹配标记的标记 {information} |
+| UpdateMarkerCustomData(frameId, customData)                 | Bool              | 为给定 frameId 位置的标记更新 customData (string) 。CustomData 不通过 UI 公开，对于脚本开发人员将任何用户特定数据附加到标记非常有用 |
+| GetMarkerCustomData(frameId)                                | String            | 返回给定 frameId 位置标记的 customData 字符串                |
+| DeleteMarkersByColor(color)                                 | Bool              | 从时间线项目中删除所有指定颜色的标记。“All"作为参数删除所有颜色标记 |
+| DeleteMarkerAtFrame(frameNum)                               | Bool              | 从 TimelineItem 中删除帧编号处的标记                         |
+| DeleteMarkerByCustomData(customData)                        | Bool              | 删除具有指定 customData 的第一个匹配标记                     |
+| AddFlag(color)                                              | Bool              | 添加具有给定 color (string) 的标志                           |
+| GetFlagList()                                               | [colors...]       | 返回分配给 TimelineItem 的标志颜色列表                       |
+| ClearFlags(color)                                           | Bool              | 清除指定颜色的标志。支持“all”参数以清除所有标志              |
+| GetClipColor()                                              | String            | 以字符串形式返回 TimelineItem 颜色                           |
+| SetClipColor(colorName)                                     | Bool              | 根据 colorName (string) 设置 TimelineItem 颜色               |
+| ClearClipColor()                                            | Bool              | 清除 TimelineItem 颜色                                       |
+| AddFusionComp()                                             | fusionComp        | 添加与 TimelineItem 关联的新 Fusion 合成                     |
+| ImportFusionComp(path)                                      | fusionComp        | 通过为项目创建和添加新组合，从给定文件路径导入 Fusion 组合   |
+| ExportFusionComp(path, compIndex)                           | Bool              | 将基于给定 compIndex 的 Fusion 组合导出到提供的 path         |
+| DeleteFusionCompByName(compName)                            | Bool              | 删除命名为 compName 的 Fusion 合成                           |
+| LoadFusionCompByName(compName)                              | fusionComp        | 将命名为 fusionComp 的 Fusion 合成加载为活动合成             |
+| RenameFusionCompByName(oldName, newName)                    | Bool              | 重命名由 oldName 标识的 Fusion 合成                          |
+| AddVersion(versionName, versionType)                        | Bool              | 根据 versionType（0 - 本地，1 - 远程）为视频剪辑片段添加新的颜色版本 |
+| GetCurrentVersion()                                         | {versionName...}  | 返回视频剪辑片段的当前版本。 返回值将包含键 versionName 和 versionType（0 - 本地，1 - 远程） |
+| DeleteVersionByName(versionName, versionType)               | Bool              | 按 versionName 和 versionType (0 - 本地，1 - 远程) 删除颜色版本 |
+| LoadVersionByName(versionName, versionType)                 | Bool              | 加载命名为 versionName 的颜色版本作为活动版本。versionType: 0 - 本地，1 - 远程 |
+| RenameVersionByName(oldName, newName, versionType)          | Bool              | 重命名由 oldName 和 versionType (0 - 本地，1 - 远程) 标识的颜色版本 |
+| GetVersionNameList(versionType)                             | [names...]        | 返回给定 versionType (0 - 本地，1 - 远程) 的所有颜色版本的列表 |
+| GetMediaPoolItem()                                          | MediaPoolItem     | 返回与时间线项目对应的 MediaPoolItem 对象（如果存在）        |
+| GetStereoConvergenceValues()                                | {keyframes...}    | 返回关键帧偏移量和相应收敛值的字典 (offset -> value)         |
+| GetStereoLeftFloatingWindowParams()                         | {keyframes...}    | 对于左眼 - >返回密钥帧偏移和相应浮动窗口参数的dict（offset - > dict）。 特定偏移的值包括左，右，顶部和底部浮动窗口值 |
+| GetStereoRightFloatingWindowParams()                        | {keyframes...}    | 对于右眼 - >返回密钥帧偏移和相应浮动窗口参数的dict（offset - > dict）。 特定偏移的值包括左，右，顶部和底部浮动窗口值 |
+| GetNumNodes()                                               | Int               | 返回时间线当前图中的节点数量                                 |
+| SetLUT(nodeIndex, lutPath)                                  | Bool              | 在节点映射上提供的节点索引，1 <= nodeIndex <=节点总数<br/>可以是绝对路径，或者是相对路径（基于自定义LUT路径或主LUT路径）<br/>对于解决方案已经发现的有效LUT路径成功了（请参阅Project.refreshlutlist） |
+| GetLUT(nodeIndex)                                           | String            | 根据提供的节点索引获取相对LUT路径，1 <= NodeIndex <=节点总数 |
+| SetCDL([CDL map])                                           | Bool              | 映射的键是：“ nodeIndex”，“ slope”，“ offset”，“ power”，“Saturation”，其中1 <= nodeIndex <= 节点的总数。<br/>示例 python 代码 - SetCDL({"NodeIndex" : "1", "Slope" : "0.5 0.4 0.2", "Offset" : "0.4 0.3 0.2", "Power" : "0.6 0.7 0.8", "Saturation" : "0.65"}) |
+| AddTake(mediaPoolItem, startFrame, endFrame)                | Bool              | 将 mediaPoolIitem 添加为新 take。 如果需要，将时间表项初始化一个时间轴项。 默认情况下，添加了完整的剪辑扩展。startFrame (int) 和endFrame (int) 是用于指定范围的可选参数 |
+| GetSelectedTakeIndex()                                      | Int               | 返回当前选择 take 的索引，或者如果剪辑不是 take 选择器，则返回0 |
+| GetTakesCount()                                             | Int               | 返回 take 选择器的数量，或者如果剪辑不是 take 选择器，则返回0 |
+| GetTakeByIndex(idx)                                         | {takeInfo...}     | 返回还有指定 take 索引信息的字典 (keys "startFrame", "endFrame" and "mediaPoolItem") |
+| DeleteTakeByIndex(idx)                                      | Bool              | 通过索引删除 take，1 <= idx <= take 的数量                   |
+| SelectTakeByIndex(idx)                                      | Bool              | 通过索引选择一个 take，1 <= idx <= take 的数量               |
+| FinalizeTake()                                              | Bool              | 最终确定 take                                                |
+| CopyGrades([tgtTimelineItems])                              | Bool              | 将当前等级复制到 tgtTimelineItems 列表中的所有项目。 在成功时返回 True，如果发生任何错误返回 False |
+| UpdateSidecar()                                             | Bool              | 更新用于 R3D 剪辑片段的 BRAW 剪辑片段或 RMD 文件的 sidecar 文件 |
+| GetUniqueId()                                               | String            | 返回 TimelineItem 的唯一ID                                   |
